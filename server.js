@@ -3,53 +3,25 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var path = require("path");
+var htmlRoutes = require("./routing/htmlRoutes.js");
+var apiRoutes = require("./routing/apiRoutes.js");
 
-// Sets up the Express App
+// Sets up the Express App and routes
 // =============================================================
 var app = express();
 var PORT = process.env.PORT || 3000;
 
 //friends
 //==================
-var friends = [
 
-]
 
 // Sets up the Express app to handle data parsing
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-// Routes
-// =============================================================
-
-// Basic route that sends the user first to the AJAX Page
-app.get("/", function(req, res) {
-    res.sendFile(path.join(__dirname, "public/home.html"));
-});
-app.get("/survey", function(req, res) {
-    res.sendFile(path.join(__dirname, "public/survey.html"));
-});
+htmlRoutes(app);
+apiRoutes(app);
 
 
-
-
-// Create New Characters - takes in JSON input
-app.post("/api/new", function(req, res) {
-    // req.body hosts is equal to the JSON post sent from the user
-    // This works because of our body-parser middleware
-    var newFriend = req.body;
-    // Using a RegEx Pattern to remove spaces from newCharacter
-    // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
-    // newcharacter.routeName = newcharacter.name.replace(/\s+/g, "").toLowerCase();
-
-    console.log(newFriend);
-
-    friends.push(newFriend);
-
-    res.json(newFriend);
-});
-
-// Starts the server to begin listening
 // =============================================================
 app.listen(PORT, function() {
     console.log("App listening on PORT " + PORT);
